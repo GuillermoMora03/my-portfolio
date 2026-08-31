@@ -36,8 +36,7 @@ public class ExperienceRepositoryImpl implements IExperienceRepository{
 
     @Override
     public List<Experience> findAll() {
-        String sql = "SELECT jobTitle, companyName, startDate, endDate, description, personalInfoId" +
-                     "FROM experiences";
+        String sql = "SELECT id, job_title, company_name, start_date, end_date, description, personal_info_id FROM experiences";
         return jdbcTemplate.query(sql, experienceRowMapper);
     }
 
@@ -54,14 +53,15 @@ public class ExperienceRepositoryImpl implements IExperienceRepository{
 
     @Override
     public Experience save(Experience experience) {
-        if(experience.getId() == null){
+        if (experience.getId() == null) {
             // INSERT
-            String sql = "INSERT INTO experiences INTO (job_title, company_name, start_date, end_date, description, " +
-            "personal_info_id) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO experiences (job_title, company_name, start_date, end_date, description, " +
+                    "personal_info_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id";
             KeyHolder keyHolder = new GeneratedKeyHolder();
 
             jdbcTemplate.update(connection -> {
-                PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
+                PreparedStatement ps = connection.prepareStatement(sql,
+                        new String[]{"id"});
                 ps.setString(1, experience.getJobTitle());
                 ps.setString(2, experience.getCompanyName());
                 ps.setObject(3, experience.getStartDate());
@@ -72,9 +72,9 @@ public class ExperienceRepositoryImpl implements IExperienceRepository{
             }, keyHolder);
 
             experience.setId(Objects.requireNonNull(keyHolder.getKey()).longValue());
-        } else{
+        } else {
             // UPDATE
-            String sql = "UPDATE experiences SET jobTitle = ?, company_name = ?, start_date = ?, end_date = ?, " +
+            String sql = "UPDATE experiences SET job_title = ?, company_name = ?, start_date = ?, end_date = ?, " +
                     "description = ?, personal_info_id = ? WHERE id = ?";
             jdbcTemplate.update(sql,
                     experience.getJobTitle(),
@@ -85,7 +85,6 @@ public class ExperienceRepositoryImpl implements IExperienceRepository{
                     experience.getPersonalInfoId(),
                     experience.getId());
         }
-
         return experience;
     }
 
