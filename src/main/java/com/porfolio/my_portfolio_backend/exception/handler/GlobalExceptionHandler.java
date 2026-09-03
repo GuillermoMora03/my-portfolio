@@ -1,4 +1,4 @@
-package com.porfolio.my_portfolio_backend.exception.hangler;
+package com.porfolio.my_portfolio_backend.exception.handler;
 
 import com.porfolio.my_portfolio_backend.exception.ValidationException;
 import org.springframework.ui.Model;
