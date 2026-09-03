@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     public String handleValidationException(ValidationException ex, Model model) {
 
         model.addAttribute("errors", ex.getBindingResult().getAllErrors());
-        model.addAttribute("message", "Se econtraron errores de validación");
+        model.addAttribute("message", "Se encontraron errores de validación");
         return "error/validation";
     }
 
