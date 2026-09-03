@@ -1,5 +1,6 @@
 package com.porfolio.my_portfolio_backend.service;
 
+import com.porfolio.my_portfolio_backend.exception.ValidationException;
 import com.porfolio.my_portfolio_backend.model.PersonalInfo;
 import com.porfolio.my_portfolio_backend.repository.IPersonalInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,8 @@ public class PersonalInfoServiceImpl implements IPersonalInfoService{
     public PersonalInfo save(PersonalInfo personalInfo) {
         BindingResult result = new BeanPropertyBindingResult(personalInfo, "personalInfo");
         validator.validate(personalInfo, result);
-
         if (result.hasErrors()) {
-            System.out.println("Errores de validación encontrados: " + result.getAllErrors());
-            throw new IllegalArgumentException("Errores: " + result.getAllErrors());
+            throw new ValidationException(result);
         }
         return personalInfoRepository.save(personalInfo);
     }
