@@ -76,4 +76,18 @@ public class SkillServiceImplTest {
         verify(skillRepository, never()).save(any(Skill.class));
     }
 
+    @Test
+    void testSaveSkillSavesValidSkill(){
+        //Preparación
+        Skill validSkill = new Skill(null, "Java", 90, "fab fa-java", 1L);
+        when(skillRepository.save(any(Skill.class))).thenReturn(validSkill);
+        doNothing().when(validator).validate(any(Skill.class), any(BindingResult.class));
+
+        //Acción
+        Skill savedSkill = skillService.save(validSkill);
+
+        //Verificación
+        assertNotNull(savedSkill);
+        verify(skillRepository, times(1)).save(validSkill);
+    }
 }
