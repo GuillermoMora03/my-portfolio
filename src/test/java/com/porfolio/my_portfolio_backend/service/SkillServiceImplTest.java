@@ -71,7 +71,7 @@ public class SkillServiceImplTest {
         }).when(validator).validate(any(Skill.class), any(BindingResult.class));
 
         assertThrows(ValidationException.class, () -> skillService.save(invalidSkill),
-                "Debe lanzarse una ValidationException si el obketo no es válido");
+                "Debe lanzarse una ValidationException si el objeto no es válido");
 
         verify(skillRepository, never()).save(any(Skill.class));
     }
