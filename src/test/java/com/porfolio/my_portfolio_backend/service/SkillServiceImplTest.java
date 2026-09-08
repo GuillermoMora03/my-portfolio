@@ -1,6 +1,7 @@
 package com.porfolio.my_portfolio_backend.service;
 
 
+import com.porfolio.my_portfolio_backend.exception.ValidationException;
 import com.porfolio.my_portfolio_backend.model.Skill;
 import com.porfolio.my_portfolio_backend.repository.ISkillRepository;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +24,9 @@ public class SkillServiceImplTest {
 
     @Mock
     private ISkillRepository skillRepository;
+
+    @Mock
+    private Validator validator;
 
     @InjectMocks
     private SkillServiceImpl skillService;
@@ -53,4 +59,21 @@ public class SkillServiceImplTest {
         assertEquals(skillMock, skillOptional.get());
         verify(skillRepository, times(1)).findById(id);
     }
+
+    @Test
+    void testSaveSkillThrowsExceptionWhenInvalid() {
+
+        Skill invalidSkill = new Skill();
+        doAnswer( invocationOnMock -> {
+            BindingResult result = invocationOnMock.getArgument(1);
+            result.rejectValue("name", "NotBlank", "El nombre no puede estar vacío");
+            return null;
+        }).when(validator).validate(any(Skill.class), any(BindingResult.class));
+
+        assertThrows(ValidationException.class, () -> skillService.save(invalidSkill),
+                "Debe lanzarse una ValidationException si el obketo no es válido");
+
+        verify(skillRepository, never()).save(any(Skill.class));
+    }
+
 }
