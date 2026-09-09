@@ -23,9 +23,9 @@ public class IndexController {
         System.out.println("Mostrando la página de inicio");
 
         model.addAttribute("personalInfo", personalInfoService.findAll());
-        model.addAttribute("education", educationService.findAll());
+        model.addAttribute("educationList", educationService.findAll());
         model.addAttribute("skills", skillService.findAll());
-        model.addAttribute("experience", experienceService.findAll());
+        model.addAttribute("experienceList", experienceService.findAll());
 
         return "index";
     }
