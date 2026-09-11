@@ -9,5 +9,5 @@ public interface IProjectRepository {
     List<Project> findAll();
     Optional<Project> findById(Long id);
     Project save(Project project);
-    void deleteById(Project project);
+    void deleteById(Long id);
 }
