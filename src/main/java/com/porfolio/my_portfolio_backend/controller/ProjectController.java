@@ -32,6 +32,12 @@ public class ProjectController {
         return "projects/list";
     }
 
+    @GetMapping("/new-project")
+    public String showForm(Model model) {
+        model.addAttribute("projectDto", new ProjectDto());
+        return "projects/form-projects";
+    }
+
     @PostMapping("/save")
     public String saveProject(@Valid @ModelAttribute("projectDto") ProjectDto projectDto,
                               @RequestParam("file") MultipartFile file
