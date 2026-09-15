@@ -33,13 +33,13 @@ public class ProjectRepositoryImpl implements IProjectRepository{
 
     @Override
     public List<Project> findAll() {
-        String sql = "SELECT id, title, description, image_url, project_url, personal_info_id FROM project";
+        String sql = "SELECT id, title, description, image_url, project_url, personal_info_id FROM projects";
         return jdbcTemplate.query(sql, rowMapper);
     }
 
     @Override
     public Optional<Project> findById(Long id) {
-        String sql = "SELECT id, title, description, image_url, project_url, personal_info_id FROM project WHERE id = ?";
+        String sql = "SELECT id, title, description, image_url, project_url, personal_info_id FROM projects WHERE id = ?";
         try{
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, rowMapper, id));
         }catch (EmptyResultDataAccessException e){
