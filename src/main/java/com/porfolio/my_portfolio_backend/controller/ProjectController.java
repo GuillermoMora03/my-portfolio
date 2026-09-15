@@ -35,7 +35,7 @@ public class ProjectController {
     @GetMapping("/new-project")
     public String showForm(Model model) {
         model.addAttribute("projectDto", new ProjectDto());
-        return "projects/form-projects";
+        return "projects/form-project";
     }
 
     @PostMapping("/save")
