@@ -42,6 +42,6 @@ public class FileStorageService {
                                                      // Y lo escribe en la ruta que escribimos en el paso anterior
 
         // Retorno de la URL relativa
-        return "/img/project/" + fileName;
+        return "/img/projects/" + fileName;
     }
 }
