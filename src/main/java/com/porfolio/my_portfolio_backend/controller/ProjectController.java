@@ -26,8 +26,8 @@ public class ProjectController {
     @GetMapping
     public String getAll(Model model) {
         List<ProjectDto> projects = projectService.findAll().stream()
-                .map(ProjectMapper::toDto)
-                .toList();
+                        .map(ProjectMapper::toDto)
+                        .toList();
         model.addAttribute("projects", projects);
         return "projects/list";
     }
