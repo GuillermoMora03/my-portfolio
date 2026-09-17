@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,9 +40,17 @@ public class ProjectController {
     }
 
     @PostMapping("/save")
-    public String saveProject(@Valid @ModelAttribute("projectDto") ProjectDto projectDto,
+    public String saveProject(@Valid @ModelAttribute("projectDto") ProjectDto projectDto, BindingResult result,
                               @RequestParam("file") MultipartFile file
     ) {
+        if (file.isEmpty()) {
+            result.rejectValue("imageUrl", "file.required", "La imagen del proyecto es obligatoria");
+        }
+
+        if (result.hasErrors()) {
+            return "projects/form-project";
+        }
+
         try {
             String imageUrl = fileStorageService.storeFile(file);
 
