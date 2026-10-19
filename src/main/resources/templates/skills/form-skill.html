@@ -11,7 +11,7 @@
 <body>
     <header>
       <div class="container">
-        <div th:insert="~{fragments/nav :: nav}"></div>
+        <div th:insert="~{fragments/nav-admin :: nav-admin}"></div>
       </div>
     </header>
 
@@ -22,7 +22,7 @@
             <a th:href="@{/skills}">Volver a la lista de Habilidades</a>
             <a th:href="@{/logout}">Cerrar Sesión</a>
           </div>
-          <h2>Formulario de Habilidad</h2>
+          <h2 th:text="${skillDto.id == null ? 'Crear Nueva Habilidad Laboral' : 'Editar Habilidad Laboral'}">Formulario de Habilidad</h2>
 
           <form class="contact-form" method="post" th:action="@{/skills/save}" th:object="${skillDto}">
             <input type="hidden" th:field="*{id}" />
