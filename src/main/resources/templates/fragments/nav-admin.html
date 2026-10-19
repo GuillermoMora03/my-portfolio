@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-</head>
 <body>
-      <nav th:fragment="nav-admin">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a th:href="@{/personal-info}">Personal Info</a></li>
-          <li><a th:href="@{/education}">Education</a></li>
-          <li><a th:href="@{/experience}">Experience</a></li>
-            <li><a th:href="@{/projects}">Projects</a></li>
-          <li><a th:href="@{/skills}">Skills</a></li>
-        </ul>
-      </nav>
+<header class="admin-header" th:fragment="nav-admin">
+    <div class="admin-header__inner">
+        <a class="brand" th:href="@{/}" aria-label="Ver portafolio público">
+            <span class="brand__mark" aria-hidden="true">&lt;/&gt;</span>
+            <span>Panel</span>
+        </a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="admin-nav">
+            <span class="visually-hidden">Abrir menú</span>
+            <span class="nav-toggle__bars" aria-hidden="true"></span>
+        </button>
+        <nav id="admin-nav" class="site-nav" aria-label="Administración">
+            <ul>
+                <li><a th:href="@{/}">Portafolio</a></li>
+                <li><a th:href="@{/personal-info}">Información personal</a></li>
+                <li><a th:href="@{/education}">Educación</a></li>
+                <li><a th:href="@{/experience}">Experiencia</a></li>
+                <li><a th:href="@{/projects}">Proyectos</a></li>
+                <li><a th:href="@{/skills}">Habilidades</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
 </body>
 </html>

@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/general.css">
-    <link rel="stylesheet" href="/css/list.css">
-    <title>Lista de proyectos</title>
+    <th:block th:replace="~{fragments/head :: head('Proyectos · Panel', 'admin')}"></th:block>
 </head>
-<body>
-    <header>
-        <div class="container">
-            <div th:insert="~{fragments/nav-admin :: nav-admin}"></div>
-        </div>
-    </header>
+<body class="admin">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <div th:replace="~{fragments/nav-admin :: nav-admin}"></div>
+    <main id="main" class="admin-main">
+        <div class="admin-shell">
+            <div class="page-head">
+                <div>
+                    <h1 class="page-head__title">Proyectos guardados</h1>
+                    <p class="page-head__sub">Proyectos que se muestran en el portafolio.</p>
+                </div>
+                <div class="page-head__actions">
+                    <a class="btn" th:href="@{/projects/new-project}">Crear nuevo proyecto</a>
+                </div>
+            </div>
 
-    <main>
-        <div class="container">
-            <section class="admin-section">
-                <h2>Proyectos guardados</h2>
-                <a th:href="@{projects/new-project}">Crear nuevo proyecto</a>
+            <div class="table-wrap">
                 <table class="admin-table">
                     <thead>
                     <tr>
-                        <th>Titulo</th>
-                        <th>Descripción</th>
-                        <th>URL del proyecto</th>
-                        <th>Imagen</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">URL del proyecto</th>
+                        <th scope="col">Imagen</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="project : ${projects}">
-                        <td th:text="${project.title}">Título del Proyecto</td>
-                        <td th:text="${project.description}">Descripción</td>
-                        <td th:text="${project.projectUrl}">URL</td>
+                        <td class="cell-strong" th:text="${project.title}">Título del Proyecto</td>
+                        <td class="cell-wide" th:text="${project.description}">Descripción</td>
+                        <td class="cell-url" th:text="${project.projectUrl}">URL</td>
                         <td>
-                            <img th:src="@{${project.imageUrl}}" width="150" height="150" alt="Imagen del Proyecto">
+                            <img class="thumb" th:src="@{${project.imageUrl}}" width="150" height="150" alt="Imagen del Proyecto">
                         </td>
                     </tr>
                     </tbody>
                 </table>
-            </section>
+            </div>
+
+            <div class="empty-state" th:if="${projects.isEmpty()}">
+                <h2>Todavía no hay proyectos guardados</h2>
+                <a class="btn" th:href="@{/projects/new-project}">Crear el primero</a>
+            </div>
         </div>
     </main>
-
-    <div th:insert="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

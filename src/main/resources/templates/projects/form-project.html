@@ -1,47 +1,58 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/general.css">
-    <link rel="stylesheet" href="/css/style-form-project.css">
-    <title>Gestión de Proyecto</title>
+    <th:block th:replace="~{fragments/head :: head('Gestión de proyecto · Panel', 'admin')}"></th:block>
 </head>
-<body>
+<body class="admin">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <div th:replace="~{fragments/nav-admin :: nav-admin}"></div>
+    <main id="main" class="admin-main">
+        <div class="admin-shell admin-shell--form">
+            <div class="page-head">
+                <div>
+                    <h1 class="page-head__title" th:text="'Formulario de proyecto'"></h1>
+                    <p class="page-head__sub">Se muestra como tarjeta en la sección Proyectos del portafolio.</p>
+                </div>
+                <div class="page-head__actions">
+                    <a class="btn btn--ghost" th:href="@{/projects}">Volver a proyectos</a>
+                </div>
+            </div>
 
-    <header>
-        <div class="container">
-            <div th:insert="~{fragments/nav-admin :: nav-admin}"></div>
-        </div>
-    </header>
-
-    <main>
-        <div class="container">
-            <section id="contact">
-                <h2>Formulario de Proyecto</h2>
-                <form class="contact-form" th:action="@{/projects/save}" th:object="${projectDto}" method="post" enctype="multipart/form-data">
-                    <input type="text" th:field="*{title}" placeholder="Título">
-                    <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
-
-                    <textarea th:field="*{description}" placeholder="Descripción" rows="6"></textarea>
-                    <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error-message"></div>
-
-                    <input type="url" th:field="*{projectUrl}" placeholder="URL del Proyecto" />
-                    <div th:if="${#fields.hasErrors('projectUrl')}" th:errors="*{projectUrl}" class="error-message"></div>
-
-                    <label>Imagen del Proyecto:</label>
-                    <input type="file" name="file" />
-                    <div th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="error-message"></div>
-
-                    <input type="number" th:field="*{personalInfoId}" placeholder="ID Información Personal" />
-                    <div th:if="${#fields.hasErrors('personalInfoId')}" th:errors="*{personalInfoId}" class="error-message"></div>
-                    <button type="submit">Guardar Proyecto</button>
-                </form>
-            </section>
+            <form class="admin-form" th:action="@{/projects/save}" th:object="${projectDto}" method="post" enctype="multipart/form-data">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="title">Título</label>
+                        <input id="title" th:field="*{title}" type="text" placeholder="Título">
+                        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
+                    </div>
+                    <div class="form-field form-field--full">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" th:field="*{description}" placeholder="Descripción" rows="6"></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error-message"></div>
+                    </div>
+                    <div class="form-field form-field--full">
+                        <label for="projectUrl">URL del proyecto</label>
+                        <input id="projectUrl" th:field="*{projectUrl}" type="url" placeholder="URL del Proyecto">
+                        <div th:if="${#fields.hasErrors('projectUrl')}" th:errors="*{projectUrl}" class="error-message"></div>
+                    </div>
+                    <div class="form-field form-field--full">
+                        <label for="file">Imagen del proyecto</label>
+                        <input type="file" id="file" name="file" accept="image/*" />
+                        <div th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="personalInfoId">ID de información personal</label>
+                        <input id="personalInfoId" th:field="*{personalInfoId}" type="number" placeholder="ID Información Personal">
+                        <div th:if="${#fields.hasErrors('personalInfoId')}" th:errors="*{personalInfoId}" class="error-message"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Guardar proyecto</button>
+                    <a class="btn btn--ghost" th:href="@{/projects}">Cancelar</a>
+                </div>
+            </form>
         </div>
     </main>
-
-    <div th:insert="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>
