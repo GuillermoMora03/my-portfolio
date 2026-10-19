@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-</head>
 <body>
-    <section id="about" th:fragment="about">
-      <h2>WHO AM I ?</h2>
-      <p th:text="${personalInfo.profileDescription}"></p>
-        <a href="#projects">
-            <button>SHOW MY PROJECTS</button>
-        </a>
-
-    </section>
+<section id="about" class="section about" th:fragment="about" aria-labelledby="about-title">
+    <div class="container about__grid">
+        <header class="section__head">
+            <h2 id="about-title" class="section__title">Sobre mí</h2>
+        </header>
+        <div class="about__body">
+            <p class="about__text" th:text="${personalInfo.profileDescription}">Descripción</p>
+        </div>
+        <dl class="facts">
+            <div class="facts__item" th:if="${personalInfo.yearsOfExperience != null}">
+                <dt>Experiencia</dt>
+                <dd><span class="facts__num" th:text="${personalInfo.yearsOfExperience}">5</span> años</dd>
+            </div>
+            <div class="facts__item" th:if="${not #strings.isEmpty(personalInfo.email)}">
+                <dt>Correo</dt>
+                <dd><a th:href="'mailto:' + ${personalInfo.email}" th:text="${personalInfo.email}">correo</a></dd>
+            </div>
+            <div class="facts__item" th:if="${not #strings.isEmpty(personalInfo.phone)}">
+                <dt>Teléfono</dt>
+                <dd><a th:href="'tel:' + ${personalInfo.phone}" th:text="${personalInfo.phone}">teléfono</a></dd>
+            </div>
+        </dl>
+    </div>
+</section>
 </body>
 </html>

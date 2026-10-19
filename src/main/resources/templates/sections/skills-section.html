@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-</head>
 <body>
-    <section id="skills" th:fragment="skills">
-      <h2>MY SKILLS</h2>
-      <div class="skills-grid">
-        <div class="skill-card" th:each="skill : ${skills}">
-          <img th:src="${skill.iconClass}" th:alt="${skill.name}">
-            <h3 th:text="${skill.name}">HTML5</h3>
-        </div>
-      </div>
-    </section>
-
+<section id="skills" class="section" th:fragment="skills" aria-labelledby="skills-title">
+    <div class="container">
+        <header class="section__head">
+            <h2 id="skills-title" class="section__title">Habilidades</h2>
+            <p class="section__intro">Tecnologías con las que trabajo y el nivel de dominio que me asigno.</p>
+        </header>
+        <ul class="skills-grid" role="list">
+            <li class="skill-card" th:each="skill : ${skills}">
+                <div class="skill-card__icon">
+                    <img th:src="${skill.iconClass}" alt="" width="40" height="40" loading="lazy">
+                </div>
+                <h3 class="skill-card__name" th:text="${skill.name}">Java</h3>
+                <div th:if="${skill.levelPercentage != null}" class="skill-card__level">
+                    <div class="meter" role="meter" aria-valuemin="0" aria-valuemax="100"
+                         th:attr="aria-valuenow=${skill.levelPercentage},aria-label=${skill.name + ': ' + skill.levelPercentage + '%'}">
+                        <span class="meter__fill" th:style="'--level:' + ${skill.levelPercentage} + '%'"></span>
+                    </div>
+                    <span class="skill-card__pct" th:text="${skill.levelPercentage} + '%'">90%</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
 </body>
 </html>

@@ -1,76 +1,88 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title th:text="${personalInfoDto.id == null ? 'Crear Información Personal' : 'Editar Información Personal'}">Formulario de Información Personal</title>
-    <link rel="stylesheet" href="/css/general.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/form-style.css">
+    <th:block th:replace="~{fragments/head :: head(${personalInfoDto.id == null ? 'Crear información personal' : 'Editar información personal'} + ' · Panel', 'admin')}"></th:block>
 </head>
-<body>
-
-<header>
-    <div class="container">
-        <div th:insert="~{fragments/nav-admin :: nav-admin}" ></div>
-    </div>
-</header>
-
-<main>
-    <div class="container">
-        <section class="admin-section">
-            <div class="admin-actions">
-                <a th:href="@{/}">Ver Portfolio Público</a>
-                <a th:href="@{/logout}" class="logout-link">Cerrar Sesión</a>
-            </div>
-            <h2 th:text="${personalInfoDto.id == null ? 'Crear Información Personal' : 'Editar Información Personal'}">Formulario de Información Personal</h2>
-
-            <div th:if="${message}">
-                <p th:text="${message}"></p>
-            </div>
-            <div th:if="${error}">
-                <p th:text="${error}"></p>
+<body class="admin">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <div th:replace="~{fragments/nav-admin :: nav-admin}"></div>
+    <main id="main" class="admin-main">
+        <div class="admin-shell admin-shell--form">
+            <div class="page-head">
+                <div>
+                    <h1 class="page-head__title" th:text="${personalInfoDto.id == null ? 'Crear información personal' : 'Editar información personal'}"></h1>
+                    <p class="page-head__sub">Datos del hero, de la sección Sobre mí y del contacto.</p>
+                </div>
+                <div class="page-head__actions">
+                    <a class="btn btn--ghost" th:href="@{/}">Ver portafolio público</a>
+                    <a class="btn btn--ghost" th:href="@{/logout}">Cerrar sesión</a>
+                </div>
             </div>
 
-            <form class="contact-form" th:action="@{/personal-info/save}" th:object="${personalInfoDto}" method="post">
-                <input type="hidden" th:field="*{id}" />
+            <div th:if="${message}" class="message-success" role="status"><p th:text="${message}"></p></div>
+            <div th:if="${error}" class="message-error" role="alert"><p th:text="${error}"></p></div>
 
-                <input type="text" th:field="*{firstName}" placeholder="Nombre" required>
-                <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message"></div>
-
-                <input type="text" th:field="*{lastName}" placeholder="Apellido" required>
-                <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></div>
-
-                <input type="text" th:field="*{title}" placeholder="Título (ej. Full Stack Developer)" required>
-                <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
-
-                <textarea th:field="*{profileDescription}" placeholder="Descripción de tu perfil (quién soy)" rows="8" required></textarea>
-                <div th:if="${#fields.hasErrors('profileDescription')}" th:errors="*{profileDescription}" class="error-message"></div>
-
-                <input type="text" th:field="*{profileImageUrl}" placeholder="URL de la imagen de perfil" required>
-                <div th:if="${#fields.hasErrors('profileImageUrl')}" th:errors="*{profileImageUrl}" class="error-message"></div>
-
-                <input type="number" th:field="*{yearsOfExperience}" placeholder="Años de experiencia" min="0" required>
-                <div th:if="${#fields.hasErrors('yearsOfExperience')}" th:errors="*{yearsOfExperience}" class="error-message"></div>
-
-                <input type="email" th:field="*{email}" placeholder="Email de contacto" required>
-                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></div>
-
-                <input type="tel" th:field="*{phone}" placeholder="Número de teléfono" required>
-                <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></div>
-
-                <input type="url" th:field="*{linkedinUrl}" placeholder="URL de LinkedIn" required>
-                <div th:if="${#fields.hasErrors('linkedinUrl')}" th:errors="*{linkedinUrl}" class="error-message"></div>
-
-                <input type="url" th:field="*{githubUrl}" placeholder="URL de GitHub" required>
-                <div th:if="${#fields.hasErrors('githubUrl')}" th:errors="*{githubUrl}" class="error-message"></div>
-
-                <button type="submit">Guardar Información Personal</button>
+            <form class="admin-form" th:action="@{/personal-info/save}" th:object="${personalInfoDto}" method="post">
+                    <input type="hidden" th:field="*{id}" />
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="firstName">Nombre</label>
+                        <input id="firstName" th:field="*{firstName}" type="text" placeholder="Nombre" required>
+                        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="lastName">Apellido</label>
+                        <input id="lastName" th:field="*{lastName}" type="text" placeholder="Apellido" required>
+                        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error-message"></div>
+                    </div>
+                    <div class="form-field form-field--full">
+                        <label for="title">Título profesional</label>
+                        <input id="title" th:field="*{title}" type="text" placeholder="Título (ej. Full Stack Developer)" required>
+                        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="error-message"></div>
+                    </div>
+                    <div class="form-field form-field--full">
+                        <label for="profileDescription">Descripción del perfil</label>
+                        <textarea id="profileDescription" th:field="*{profileDescription}" placeholder="Descripción de tu perfil (quién soy)" rows="8" required></textarea>
+                        <div th:if="${#fields.hasErrors('profileDescription')}" th:errors="*{profileDescription}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="profileImageUrl">URL de la imagen de perfil</label>
+                        <input id="profileImageUrl" th:field="*{profileImageUrl}" type="text" placeholder="URL de la imagen de perfil" required>
+                        <div th:if="${#fields.hasErrors('profileImageUrl')}" th:errors="*{profileImageUrl}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="yearsOfExperience">Años de experiencia</label>
+                        <input id="yearsOfExperience" th:field="*{yearsOfExperience}" type="number" placeholder="Años de experiencia" min="0" required>
+                        <div th:if="${#fields.hasErrors('yearsOfExperience')}" th:errors="*{yearsOfExperience}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Correo de contacto</label>
+                        <input id="email" th:field="*{email}" type="email" placeholder="Email de contacto" required>
+                        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="phone">Teléfono</label>
+                        <input id="phone" th:field="*{phone}" type="tel" placeholder="Número de teléfono" required>
+                        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="linkedinUrl">URL de LinkedIn</label>
+                        <input id="linkedinUrl" th:field="*{linkedinUrl}" type="url" placeholder="URL de LinkedIn" required>
+                        <div th:if="${#fields.hasErrors('linkedinUrl')}" th:errors="*{linkedinUrl}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="githubUrl">URL de GitHub</label>
+                        <input id="githubUrl" th:field="*{githubUrl}" type="url" placeholder="URL de GitHub" required>
+                        <div th:if="${#fields.hasErrors('githubUrl')}" th:errors="*{githubUrl}" class="error-message"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Guardar información personal</button>
+                    <a class="btn btn--ghost" th:href="@{/}">Cancelar</a>
+                </div>
             </form>
-        </section>
-    </div>
-</main>
-
-<div th:insert="~{fragments/footer :: footer}" ></div>
+        </div>
+    </main>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

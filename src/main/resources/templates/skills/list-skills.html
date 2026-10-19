@@ -1,71 +1,66 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
-    <link rel="stylesheet" href="/css/general.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/list.css">
+    <th:block th:replace="~{fragments/head :: head('Habilidades · Panel', 'admin')}"></th:block>
 </head>
-<body>
-
-    <header>
-        <div class="container">
-            <div th:insert="~{fragments/nav-admin :: nav-admin}"></div>
-        </div>
-    </header>
-
-    <main>
-        <div class="container">
-            <section class="admin-section">
-                <div class="admin-actions">
-                    <a th:href="@{/skills/new}">Crear Nueva Habilidad</a>
-                    <a th:href="@{/logout}">Cerrar Sesión</a>
+<body class="admin">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <div th:replace="~{fragments/nav-admin :: nav-admin}"></div>
+    <main id="main" class="admin-main">
+        <div class="admin-shell">
+            <div class="page-head">
+                <div>
+                    <h1 class="page-head__title">Habilidades</h1>
+                    <p class="page-head__sub">Tecnologías y nivel de dominio que se muestran en el portafolio.</p>
                 </div>
-                <h2>Lista de Habilidades</h2>
-
-                <div th:if="${message}" class="message-success">
-                    <p th:text="${message}"></p>
+                <div class="page-head__actions">
+                    <a class="btn" th:href="@{/skills/new}">Crear nueva habilidad</a>
+                    <a class="btn btn--ghost" th:href="@{/logout}">Cerrar sesión</a>
                 </div>
-                <div th:if="${error}" class="message-error">
-                    <p th:if="${error}"></p>
-                </div>
+            </div>
 
-                <table class="data-table">
+            <div th:if="${message}" class="message-success" role="status"><p th:text="${message}"></p></div>
+            <div th:if="${error}" class="message-error" role="alert"><p th:text="${error}"></p></div>
+
+            <div class="table-wrap">
+                <table class="admin-table">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Porcentaje</th>
-                        <th>Clase Ícono</th>
-                        <th>ID Info Personal</th>
-                        <th>Acciones</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Porcentaje</th>
+                        <th scope="col">Clase ícono</th>
+                        <th scope="col">ID info personal</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="skill : ${skills}">
                         <td th:text="${skill.id}"></td>
-                        <td th:text="${skill.name}"></td>
+                        <td class="cell-strong" th:text="${skill.name}"></td>
                         <td th:text="${skill.levelPercentage}"></td>
                         <td th:text="${skill.iconClass}"></td>
                         <td th:text="${skill.personalInfoId}"></td>
                         <td>
-                            <a th:href="@{/skills/edit/{id}(id=${skill.id})}" class="btn-edit">Editar</a>
-                            <form th:action="@{/skills/delete/{id}(id=${skill.id})}" method="post" style="display:inline;">
-                                <button type="submit" class="btn-delete" onclick="return confirm('¿Estás seguro de que quieres eliminar esta habilidad?');">Eliminar</button>
-                            </form>
+                            <div class="row-actions">
+                                <a th:href="@{/skills/edit/{id}(id=${skill.id})}" class="btn btn--ghost btn--sm btn-edit">Editar</a>
+                                <form th:action="@{/skills/delete/{id}(id=${skill.id})}" method="post" class="inline-form">
+                                    <button type="submit" class="btn btn--danger btn--sm btn-delete" onclick="return confirm('¿Estás seguro de que quieres eliminar esta habilidad?');">Eliminar</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
 
-                <p th:if="${skills.isEmpty()}" class="no-data-message">No hay habilidades registradas.</p>
-
-            </section>
+            <div class="empty-state" th:if="${skills.isEmpty()}">
+                <h2>Todavía no hay habilidades registradas</h2>
+                <p class="no-data-message">No hay habilidades registradas.</p>
+                <a class="btn" th:href="@{/skills/new}">Crear la primera</a>
+            </div>
         </div>
     </main>
-
-    <div th:insert="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

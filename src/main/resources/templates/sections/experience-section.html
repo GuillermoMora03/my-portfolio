@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-</head>
 <body>
-    <section id="experience" th:fragment="experience">
-      <h2>MY EXPERIENCE</h2>
-      <div class="experience-timeline">
-        <div class="timeline-item" th:each="exp : ${experienceList}">
-          <h3 th:text="${exp.jobTitle} + ' - ' + ${exp.companyName}"></h3>
-          <p class="timeline-date" th:text="${exp.startDate} + ' - ' + ${exp.endDate}"></p>
-          <p th:text="${exp.description}"></p>
-        </div>
-      </div>
-    </section>
+<section id="experience" class="section" th:fragment="experience" aria-labelledby="experience-title">
+    <div class="container">
+        <header class="section__head">
+            <h2 id="experience-title" class="section__title">Experiencia profesional</h2>
+        </header>
+        <ol class="timeline" role="list">
+            <li class="timeline__item" th:each="exp : ${experienceList}">
+                <p class="timeline__period">
+                    <time th:text="${#temporals.format(exp.startDate, 'MM/yyyy')}">01/2022</time>
+                    <span aria-hidden="true">–</span>
+                    <time th:if="${exp.endDate != null}" th:text="${#temporals.format(exp.endDate, 'MM/yyyy')}">12/2023</time>
+                    <span th:if="${exp.endDate == null}" class="timeline__now">Actualidad</span>
+                </p>
+                <div class="timeline__card">
+                    <h3 class="timeline__title" th:text="${exp.jobTitle}">Puesto</h3>
+                    <p class="timeline__org" th:text="${exp.companyName}">Empresa</p>
+                    <p class="timeline__desc" th:if="${not #strings.isEmpty(exp.description)}" th:text="${exp.description}">Descripción</p>
+                </div>
+            </li>
+        </ol>
+        <p class="empty" th:if="${#lists.isEmpty(experienceList)}">Aún no hay experiencia registrada.</p>
+    </div>
+</section>
 </body>
 </html>

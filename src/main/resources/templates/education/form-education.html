@@ -1,59 +1,66 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title th:text="${educationDto.id == null ? 'Crear Educación' : 'Editar Educación'}">Formulario de Educación</title>
-  <link rel="stylesheet" href="/css/general.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/form-style.css">
+    <th:block th:replace="~{fragments/head :: head(${educationDto.id == null ? 'Crear educación' : 'Editar educación'} + ' · Panel', 'admin')}"></th:block>
 </head>
-<body>
+<body class="admin">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <div th:replace="~{fragments/nav-admin :: nav-admin}"></div>
+    <main id="main" class="admin-main">
+        <div class="admin-shell admin-shell--form">
+            <div class="page-head">
+                <div>
+                    <h1 class="page-head__title" th:text="${educationDto.id == null ? 'Crear nueva educación' : 'Editar educación'}"></h1>
+                    <p class="page-head__sub">Aparece en la sección Educación del portafolio.</p>
+                </div>
+                <div class="page-head__actions">
+                    <a class="btn btn--ghost" th:href="@{/education}">Volver a la lista de educación</a>
+                    <a class="btn btn--ghost" th:href="@{/logout}">Cerrar sesión</a>
+                </div>
+            </div>
 
-<header>
-  <div class="container">
-    <div th:insert="~{fragments/nav-admin :: nav-admin}"></div>
-  </div>
-</header>
-
-<main>
-  <div class="container">
-    <section class="admin-section">
-      <div class="admin-actions">
-        <a th:href="@{/education}">Volver a la lista de Educación</a>
-        <a th:href="@{/logout}" class="logout-link">Cerrar Sesión</a>
-      </div>
-      <h2 th:text="${educationDto.id == null ? 'Crear Nueva Educación' : 'Editar Educación'}">Formulario de Educación</h2>
-
-      <form class="contact-form" th:action="@{/education/save}" th:object="${educationDto}" method="post">
-        <input type="hidden" th:field="*{id}" />
-
-        <input type="text" th:field="*{degree}" placeholder="Título obtenido" required>
-        <div th:if="${#fields.hasErrors('degree')}" th:errors="*{degree}" class="error-message"></div>
-
-        <input type="text" th:field="*{institution}" placeholder="Institución" required>
-        <div th:if="${#fields.hasErrors('institution')}" th:errors="*{institution}" class="error-message"></div>
-
-        <label for="startDate">Fecha de Inicio:</label>
-        <input type="date" id="startDate" th:field="*{startDate}" required>
-        <div th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" class="error-message"></div>
-
-        <label for="endDate">Fecha de Fin (opcional):</label>
-        <input type="date" id="endDate" th:field="*{endDate}">
-        <div th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" class="error-message"></div>
-
-        <textarea th:field="*{description}" placeholder="Descripción de la educación" rows="5" required></textarea>
-        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error-message"></div>
-
-        <input type="number" th:field="*{personalInfoId}" placeholder="ID Información Personal" required>
-        <div th:if="${#fields.hasErrors('personalInfoId')}" th:errors="*{personalInfoId}" class="error-message"></div>
-
-        <button type="submit">Guardar Educación</button>
-      </form>
-    </section>
-  </div>
-</main>
-
-<div th:insert="~{fragments/footer :: footer}" ></div>
+            <form class="admin-form" th:action="@{/education/save}" th:object="${educationDto}" method="post">
+                    <input type="hidden" th:field="*{id}" />
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="degree">Título obtenido</label>
+                        <input id="degree" th:field="*{degree}" type="text" placeholder="Ej. Ingeniería en Sistemas" required>
+                        <div th:if="${#fields.hasErrors('degree')}" th:errors="*{degree}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="institution">Institución</label>
+                        <input id="institution" th:field="*{institution}" type="text" placeholder="Ej. Universidad XYZ" required>
+                        <div th:if="${#fields.hasErrors('institution')}" th:errors="*{institution}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="startDate">Fecha de inicio</label>
+                        <input id="startDate" th:field="*{startDate}" type="date" required>
+                        <div th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="endDate">Fecha de fin</label>
+                    <span class="hint">Opcional. Déjala vacía si sigues cursando.</span>
+                        <input id="endDate" th:field="*{endDate}" type="date">
+                        <div th:if="${#fields.hasErrors('endDate')}" th:errors="*{endDate}" class="error-message"></div>
+                    </div>
+                    <div class="form-field form-field--full">
+                        <label for="description">Descripción</label>
+                        <textarea id="description" th:field="*{description}" placeholder="Descripción de la educación" rows="5" required></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="personalInfoId">ID de información personal</label>
+                        <input id="personalInfoId" th:field="*{personalInfoId}" type="number" placeholder="ID Información Personal" required>
+                        <div th:if="${#fields.hasErrors('personalInfoId')}" th:errors="*{personalInfoId}" class="error-message"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Guardar educación</button>
+                    <a class="btn btn--ghost" th:href="@{/education}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

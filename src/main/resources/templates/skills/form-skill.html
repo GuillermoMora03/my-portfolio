@@ -1,50 +1,57 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Formulario de Habilidad</title>
-  <link rel="stylesheet" href="/css/general.css">
-  <link rel="stylesheet" href="/css/style.css">
-  <link rel="stylesheet" href="/css/form-style.css">
+    <th:block th:replace="~{fragments/head :: head(${skillDto.id == null ? 'Crear habilidad' : 'Editar habilidad'} + ' · Panel', 'admin')}"></th:block>
 </head>
-<body>
-    <header>
-      <div class="container">
-        <div th:insert="~{fragments/nav-admin :: nav-admin}"></div>
-      </div>
-    </header>
+<body class="admin">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <div th:replace="~{fragments/nav-admin :: nav-admin}"></div>
+    <main id="main" class="admin-main">
+        <div class="admin-shell admin-shell--form">
+            <div class="page-head">
+                <div>
+                    <h1 class="page-head__title" th:text="${skillDto.id == null ? 'Crear nueva habilidad laboral' : 'Editar habilidad laboral'}"></h1>
+                    <p class="page-head__sub">Aparece en la sección Habilidades del portafolio.</p>
+                </div>
+                <div class="page-head__actions">
+                    <a class="btn btn--ghost" th:href="@{/skills}">Volver a la lista de habilidades</a>
+                    <a class="btn btn--ghost" th:href="@{/logout}">Cerrar sesión</a>
+                </div>
+            </div>
 
-    <main>
-      <div class="container">
-        <section class="admin-section">
-          <div class="admin-actions">
-            <a th:href="@{/skills}">Volver a la lista de Habilidades</a>
-            <a th:href="@{/logout}">Cerrar Sesión</a>
-          </div>
-          <h2 th:text="${skillDto.id == null ? 'Crear Nueva Habilidad Laboral' : 'Editar Habilidad Laboral'}">Formulario de Habilidad</h2>
-
-          <form class="contact-form" method="post" th:action="@{/skills/save}" th:object="${skillDto}">
-            <input type="hidden" th:field="*{id}" />
-
-            <input type="text" th:field="*{name}" placeholder="Nombre de la habilidad" required>
-            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></div>
-
-            <input type="number" th:field="*{levelPercentage}" placeholder="Porcentaje (0-100)" required min="0" max="100">
-            <div th:if="${#fields.hasErrors('levelPercentage')}" th:errors="*{levelPercentage}" class="error-message"></div>
-
-            <input type="text" th:field="*{iconClass}" placeholder="Clase del ícono (ej. fas fa-code)" required>
-            <div th:if="${#fields.hasErrors('iconClass')}" th:errors="*{iconClass}" class="error-message"></div>
-
-            <input type="number" th:field="*{personalInfoId}" placeholder="ID Información Personal" required>
-            <div th:if="${#fields.hasErrors('personalInfoId')}" th:errors="*{personalInfoId}" class="error-message"></div>
-
-            <button type="submit" class="btn">Guardar Habilidad</button>
-          </form>
-        </section>
-      </div>
+            <form class="admin-form" th:action="@{/skills/save}" th:object="${skillDto}" method="post">
+                    <input type="hidden" th:field="*{id}" />
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="name">Nombre de la habilidad</label>
+                        <input id="name" th:field="*{name}" type="text" placeholder="Nombre de la habilidad" required>
+                        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="levelPercentage">Porcentaje de dominio</label>
+                    <span class="hint">Un número entre 0 y 100.</span>
+                        <input id="levelPercentage" th:field="*{levelPercentage}" type="number" placeholder="Porcentaje (0-100)" required min="0" max="100">
+                        <div th:if="${#fields.hasErrors('levelPercentage')}" th:errors="*{levelPercentage}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="iconClass">Ícono</label>
+                    <span class="hint">Ruta de la imagen, por ejemplo img/logos/java.png.</span>
+                        <input id="iconClass" th:field="*{iconClass}" type="text" placeholder="Clase del ícono (ej. fas fa-code)" required>
+                        <div th:if="${#fields.hasErrors('iconClass')}" th:errors="*{iconClass}" class="error-message"></div>
+                    </div>
+                    <div class="form-field">
+                        <label for="personalInfoId">ID de información personal</label>
+                        <input id="personalInfoId" th:field="*{personalInfoId}" type="number" placeholder="ID Información Personal" required>
+                        <div th:if="${#fields.hasErrors('personalInfoId')}" th:errors="*{personalInfoId}" class="error-message"></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn">Guardar habilidad</button>
+                    <a class="btn btn--ghost" th:href="@{/skills}">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </main>
-
-    <div th:insert="~{fragments/footer :: footer}"></div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

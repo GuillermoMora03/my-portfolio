@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Error de Validaciones</title>
+    <th:block th:replace="~{fragments/head :: head('Error de validaciones', 'admin')}"></th:block>
 </head>
-<body>
-    <h1>¡Ups! Algo salió mal.</h1>
-    <p th:text="${message}"></p>
-    <ul>
-        <li th:each="error: ${errors}" th:text="${error.defaultMessage}"></li>
-    </ul>
-    <a href="/form">Volver al inicio</a>
+<body class="admin">
+    <a class="skip-link" href="#main">Saltar al contenido</a>
+    <div th:replace="~{fragments/nav-admin :: nav-admin}"></div>
+    <main id="main" class="admin-main">
+        <div class="admin-shell admin-shell--narrow">
+            <section class="empty-state error-page">
+                <h1>Revisa los datos enviados</h1>
+                <p th:text="${message}"></p>
+                <ul class="error-list">
+                    <li th:each="error: ${errors}" th:text="${error.defaultMessage}"></li>
+                </ul>
+                <a class="btn" href="/form">Volver al inicio</a>
+            </section>
+        </div>
+    </main>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 </body>
 </html>

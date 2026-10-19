@@ -1,21 +1,47 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
-</head>
 <body>
-    <div class="hero-section" th:fragment="hero">
-        <h1>I'm <span th:text="${personalInfo.firstName} + ' ' + ${personalInfo.lastName}"></span> <br><span th:text="${personalInfo.title}"></span></h1>
-        <div class="profile-image-container">
-            <img th:src="${personalInfo.profileImageUrl}" th:alt="${personalInfo.firstName} + ' Profile Picture'" class="profile-picture">
-        </div>
-        <p th:text="${personalInfo.profileDescription}"></p>
-        <a href="#projects">
-            <button>MY PROJECTS</button>
-        </a>
+<section class="hero" id="top" th:fragment="hero" aria-labelledby="hero-title">
+    <div class="container hero__grid">
+        <div class="hero__copy">
+            <p class="hero__role" th:text="${personalInfo.title}">Full Stack Developer</p>
+            <h1 id="hero-title" class="hero__title">
+                <span th:text="${personalInfo.firstName}">Nombre</span>
+                <span th:text="${personalInfo.lastName}">Apellido</span>
+            </h1>
+            <p class="hero__lead" th:text="${#strings.abbreviate(personalInfo.profileDescription, 170)}">Descripción</p>
 
+            <div class="hero__actions">
+                <a class="btn" th:href="@{/#projects}">Ver proyectos</a>
+                <a class="btn btn--ghost" th:href="@{/#contact}">Contactar</a>
+            </div>
+
+            <ul class="social" aria-label="Redes profesionales">
+                <li th:if="${not #strings.isEmpty(personalInfo.githubUrl)}">
+                    <a th:href="${personalInfo.githubUrl}" target="_blank" rel="noopener noreferrer">GitHub<span class="visually-hidden"> (se abre en una pestaña nueva)</span></a>
+                </li>
+                <li th:if="${not #strings.isEmpty(personalInfo.linkedinUrl)}">
+                    <a th:href="${personalInfo.linkedinUrl}" target="_blank" rel="noopener noreferrer">LinkedIn<span class="visually-hidden"> (se abre en una pestaña nueva)</span></a>
+                </li>
+                <li th:if="${not #strings.isEmpty(personalInfo.email)}">
+                    <a th:href="'mailto:' + ${personalInfo.email}">Correo</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="hero__visual">
+            <div class="portrait">
+                <img th:src="${personalInfo.profileImageUrl}" th:alt="'Retrato de ' + ${personalInfo.firstName} + ' ' + ${personalInfo.lastName}" width="480" height="560">
+            </div>
+            <figure class="code-card" aria-label="Resumen en código">
+<pre><code><span class="tok-k">var</span> dev = <span class="tok-k">new</span> <span class="tok-t">Developer</span>(
+  <span class="tok-s" th:text="'&quot;' + ${personalInfo.firstName} + ' ' + ${personalInfo.lastName} + '&quot;'">"Nombre Apellido"</span>,
+  <span class="tok-s" th:text="'&quot;' + ${personalInfo.title} + '&quot;'">"Rol"</span><span th:if="${personalInfo.yearsOfExperience != null}">,
+  <span class="tok-n" th:text="${personalInfo.yearsOfExperience}">5</span> <span class="tok-c">// años de experiencia</span></span>
+);</code></pre>
+            </figure>
+        </div>
     </div>
+</section>
 </body>
 </html>
