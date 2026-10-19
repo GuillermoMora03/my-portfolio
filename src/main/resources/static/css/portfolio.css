@@ -348,3 +348,88 @@ body.public {
     .js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
     .js .reveal.is-visible { opacity: 1; transform: none; }
 }
+
+/* ==========================================================================
+   Refinamientos (hero, microanimaciones, consistencia)
+   ========================================================================== */
+
+/* Hero: detalles visuales */
+.hero__role { display: inline-flex; align-items: center; gap: 0.55rem; background: rgba(79, 140, 255, 0.08); }
+.hero__role::before {
+    content: "";
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 0 0 rgba(63, 216, 240, 0.55);
+}
+.hero__title span:first-child {
+    background: linear-gradient(100deg, var(--text-strong) 30%, var(--electric-strong));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.hero__visual::before {
+    content: "";
+    position: absolute;
+    inset: 8% 0 12% 12%;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgba(79, 140, 255, 0.28), transparent 75%);
+    filter: blur(24px);
+}
+.hero__visual { isolation: isolate; }
+.portrait { box-shadow: var(--shadow-lg), 0 0 0 6px rgba(79, 140, 255, 0.06); }
+.portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, transparent 65%, rgba(6, 10, 23, 0.45));
+    pointer-events: none;
+}
+.code-card { backdrop-filter: blur(8px); border-left: 3px solid var(--cyan); }
+
+/* Microanimaciones */
+.btn, .contact-form button[type="submit"] { position: relative; }
+.btn:hover, .contact-form button[type="submit"]:hover { box-shadow: 0 10px 24px -10px rgba(79, 140, 255, 0.7); }
+.btn--ghost:hover { box-shadow: none; }
+.btn:active, .contact-form button[type="submit"]:active { transform: translateY(0) scale(0.98); }
+
+.social a { position: relative; border-bottom-color: transparent; background: linear-gradient(var(--electric), var(--electric)) left bottom / 0 1px no-repeat; transition: color var(--t-fast), background-size var(--t-base); }
+.social a { box-shadow: 0 1px 0 var(--line-strong); }
+.social a:hover { background-size: 100% 1px; }
+
+.facts__item { transition: transform var(--t-base), border-color var(--t-base), background var(--t-base); }
+.facts__item:hover { transform: translateY(-3px); border-color: var(--electric); background: rgba(22, 34, 74, 0.7); }
+
+.skill-card__icon { transition: transform var(--t-base); }
+.skill-card:hover .skill-card__icon { transform: scale(1.08) rotate(-4deg); }
+
+.timeline__card { transition: transform var(--t-base), border-color var(--t-base), background var(--t-base), box-shadow var(--t-base); }
+.timeline__card:hover { transform: translateX(4px); box-shadow: var(--shadow-md); }
+
+.contact-form { transition: border-color var(--t-base), box-shadow var(--t-base); }
+.contact-form:focus-within { border-color: var(--line-strong); box-shadow: var(--shadow-md); }
+.contact__links a { transition: color var(--t-fast); }
+
+@media (prefers-reduced-motion: no-preference) {
+    .hero__role::before { animation: pulse-dot 2.4s ease-out infinite; }
+    .code-card { animation: float-card 6s ease-in-out 1s infinite; }
+}
+@keyframes pulse-dot { 70%, 100% { box-shadow: 0 0 0 0.6rem rgba(63, 216, 240, 0); } }
+@keyframes float-card { 50% { translate: 0 -6px; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .skill-card:hover, .facts__item:hover, .timeline__card:hover, .project-card:hover { transform: none; }
+}
+
+/* Espaciado y responsividad */
+.hero__actions .btn { min-width: 9.5rem; }
+.project-card__body .btn { margin-top: var(--sp-2); }
+@media (max-width: 40rem) {
+    .hero__actions .btn { flex: 1 1 100%; }
+    .social { gap: var(--sp-4); }
+    .section__head { margin-bottom: var(--sp-6); }
+    .project-card__body { padding: var(--sp-5); }
+    .code-card { font-size: 0.75rem; padding: var(--sp-3) var(--sp-4); }
+}
