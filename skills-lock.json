@@ -2,10 +2,10 @@
   "version": 1,
   "skills": {
     "frontend-design": {
-      "source": "anthropics/skills",
+      "source": "vercel-labs/agent-eval",
       "sourceType": "github",
-      "skillPath": "skills/frontend-design/SKILL.md",
-      "computedHash": "89496d5dd00f4810205f351759594fc2742bf8eea85a2f2b2d1de59f4bd91576"
+      "skillPath": "packages/playground/.agents/skills/frontend-design/SKILL.md",
+      "computedHash": "537c1df9d0c694ecf9139a911f9ad0bd111a7ebc173a55457568459e543fe75b"
     }
   }
 }
