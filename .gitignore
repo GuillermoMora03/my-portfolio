@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 
+REDISENO_PORTFOLIO.md
+REDISENO_PORTFOLIO_2.md
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
