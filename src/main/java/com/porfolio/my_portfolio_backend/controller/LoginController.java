@@ -11,6 +11,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String showLoginForm(@RequestParam(value = "error", required = false) String error,
+                                @RequestParam(value = "logout", required = false) String logout,
                                 Model model,
                                 Authentication authentication
                                 ){
@@ -21,6 +22,10 @@ public class LoginController {
 
         if (error != null) {
             model.addAttribute("error", "Usuario o contraseña incorrecta");
+        }
+
+        if (logout != null) {
+            model.addAttribute("error", "Has cerrado sesión correctamente");
         }
 
         return "auth/form-login";
