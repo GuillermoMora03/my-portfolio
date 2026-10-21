@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,7 +25,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth ->
+        http
+                .authorizeHttpRequests(auth ->
                 auth.requestMatchers("/education", "/experience", "/personal-info", "/skills", "/projects").authenticated()
                         .requestMatchers("/education/new", "/education/save", "/education/edit/**", "/education/delete/**").authenticated()
                         .requestMatchers("/experience/new", "/experience/save", "/experience/edit/**", "/experience/delete/**").authenticated()
@@ -40,9 +42,6 @@ public class WebSecurityConfig {
                 )
                 .logout( logout -> logout
                         .logoutUrl("/logout")
-                        .logoutRequestMatcher(request ->
-                                "GET".equalsIgnoreCase(request.getMethod()) && "/logout".equals(request.getRequestURI())
-                                )
                         .logoutSuccessUrl("/login?logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
