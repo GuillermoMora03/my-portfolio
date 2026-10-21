@@ -35,7 +35,9 @@ public class WebSecurityConfig {
 
                         .anyRequest().permitAll()
         )
-                .formLogin(form -> form.permitAll());
+                .formLogin(form ->
+                        form.loginPage("/login").permitAll()
+                );
 
         return http.build();
     }
