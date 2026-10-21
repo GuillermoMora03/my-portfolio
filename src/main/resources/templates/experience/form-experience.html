@@ -14,8 +14,13 @@
                     <p class="page-head__sub">Aparece en la sección Experiencia del portafolio.</p>
                 </div>
                 <div class="page-head__actions">
-                    <a class="btn btn--ghost" th:href="@{/experience}">Volver a la lista de experiencias</a>
-                    <a class="btn btn--ghost" th:href="@{/logout}">Cerrar sesión</a>
+                    <button class="btn btn--ghost" type="button" th:onclick="|window.location.href='@{/experience}'|">
+                        Volver a la lista de Experiencias
+                    </button>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit" class="btn btn&#45;&#45;ghost">Cerrar Sesión</button>
+                    </form>
                 </div>
             </div>
 

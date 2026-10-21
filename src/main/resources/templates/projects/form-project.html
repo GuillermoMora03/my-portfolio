@@ -10,6 +10,13 @@
         <div class="admin-shell admin-shell--form">
             <div class="page-head">
                 <div>
+                    <button class="btn btn--ghost" type="button" th:onclick="|window.location.href='@{/projects}'|">
+                        Ver Proyectos
+                    </button>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit" class="btn btn&#45;&#45;ghost">Cerrar Sesión</button>
+                    </form>
                     <h1 class="page-head__title" th:text="'Formulario de proyecto'"></h1>
                     <p class="page-head__sub">Se muestra como tarjeta en la sección Proyectos del portafolio.</p>
                 </div>

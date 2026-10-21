@@ -10,6 +10,13 @@
         <div class="admin-shell">
             <div class="page-head">
                 <div>
+                    <button class="btn btn--ghost" type="button" th:onclick="|window.location.href='@{/projects/new-project}'|">
+                        Crear Nuevo Proyecto
+                    </button>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button type="submit" class="btn btn&#45;&#45;ghost">Cerrar Sesión</button>
+                    </form>
                     <h1 class="page-head__title">Proyectos guardados</h1>
                     <p class="page-head__sub">Proyectos que se muestran en el portafolio.</p>
                 </div>
