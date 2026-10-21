@@ -1,0 +1,6 @@
+package com.porfolio.my_portfolio_backend.service;
+
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+public interface IUserDetailsService extends UserDetailsService {
+}
