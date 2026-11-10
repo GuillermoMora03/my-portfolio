@@ -25,4 +25,21 @@ public class ProjectService implements IProjectService {
     public Project save(Project project) {
         return projectRepository.save(project);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Project findById(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "Proyecto no encontrado con ID: " + id
+                        )
+                );
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        projectRepository.deleteById(id);
+    }
 }
