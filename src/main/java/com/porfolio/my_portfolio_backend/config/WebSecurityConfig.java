@@ -1,19 +1,11 @@
 package com.porfolio.my_portfolio_backend.config;
-
-import com.porfolio.my_portfolio_backend.service.IUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -21,26 +13,32 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-    private final IUserDetailsService userDetailsService;
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth ->
-                auth.requestMatchers("/education", "/experience", "/personal-info", "/skills", "/projects").authenticated()
-                        .requestMatchers("/education/new", "/education/save", "/education/edit/**", "/education/delete/**").authenticated()
-                        .requestMatchers("/experience/new", "/experience/save", "/experience/edit/**", "/experience/delete/**").authenticated()
-                        .requestMatchers("/personal-info/create", "/personal-info/save", "/personal-info/edit/**").authenticated()
-                        .requestMatchers("/skills/new", "/skills/save", "/skills/edit/**", "/skills/delete/**").authenticated()
-                        .requestMatchers("/projects/new-project", "/projects/save", "/projects/edit/**", "/projects/delete/**").authenticated()
-                        .requestMatchers("/education/personal/**", "/experience/personal/**", "/skills/personal/**").authenticated()
+                .authorizeHttpRequests(auth -> auth
 
-                        .anyRequest().permitAll()
-        )
-                .formLogin(form ->
-                        form.loginPage("/login").permitAll()
+                        // Rutas públicas
+                        .requestMatchers(
+                                "/",
+                                "/login",
+                                "/css/**",
+                                "/js/**",
+                                "/img/**",
+                                "/favicon.ico",
+                                "/error"
+                        ).permitAll()
+
+                        // Todo lo demás requiere autenticación
+                        .anyRequest().authenticated()
                 )
-                .logout( logout -> logout
+
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll()
+                )
+
+                .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout")
                         .invalidateHttpSession(true)
@@ -51,15 +49,16 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
+
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+//    }
 
 
 //    @Bean
 //    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-//        UserDetails user = User.withUsername("admin")
-//                .password(passwordEncoder.encode("1234"))
+//        UserDetails user = User.withUsername("")
+//                .password(passwordEncoder.encode(""))
 //                .roles("ADMIN")
 //                .build();
 //
