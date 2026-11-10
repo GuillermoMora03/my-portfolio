@@ -1,9 +1,9 @@
+
 package com.porfolio.my_portfolio_backend.controller;
 
 import com.porfolio.my_portfolio_backend.dto.ProjectDto;
 import com.porfolio.my_portfolio_backend.mapper.ProjectMapper;
 import com.porfolio.my_portfolio_backend.model.Project;
-import com.porfolio.my_portfolio_backend.service.FileStorageService;
 import com.porfolio.my_portfolio_backend.service.IProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -22,51 +21,83 @@ import java.util.List;
 public class ProjectController {
 
     private final IProjectService projectService;
-    private final FileStorageService fileStorageService;
 
+    // LISTAR PROYECTOS
     @GetMapping
     public String getAll(Model model) {
-        List<ProjectDto> projects = projectService.findAll().stream()
-                        .map(ProjectMapper::toDto)
-                        .toList();
+        List<ProjectDto> projects = projectService.findAll()
+                .stream()
+                .map(ProjectMapper::toDto)
+                .toList();
+
         model.addAttribute("projects", projects);
         return "projects/list";
     }
 
+    // FORMULARIO PARA CREAR
     @GetMapping("/new-project")
     public String showForm(Model model) {
         model.addAttribute("projectDto", new ProjectDto());
         return "projects/form-project";
     }
 
+    // FORMULARIO PARA EDITAR
+    @GetMapping("/edit/{id}")
+    public String editProject(@PathVariable Long id, Model model) {
+
+        Project project = projectService.findById(id);
+
+        ProjectDto projectDto = ProjectMapper.toDto(project);
+
+        model.addAttribute("projectDto", projectDto);
+
+        return "projects/form-project";
+    }
+
+    // GUARDAR O ACTUALIZAR PROYECTO
     @PostMapping("/save")
-    public String saveProject(@Valid @ModelAttribute("projectDto") ProjectDto projectDto, BindingResult result,
-                              @RequestParam("file") MultipartFile file
+    public String saveProject(
+            @Valid @ModelAttribute("projectDto") ProjectDto projectDto,
+            BindingResult result,
+            RedirectAttributes redirectAttributes
     ) {
-        if (file.isEmpty()) {
-            result.rejectValue("imageUrl", "file.required", "La imagen del proyecto es obligatoria");
-        }
 
         if (result.hasErrors()) {
             return "projects/form-project";
         }
 
-        try {
-            String imageUrl = fileStorageService.storeFile(file);
+        boolean editing = projectDto.getId() != null;
 
-            projectDto.setImageUrl(imageUrl);
+        // Convertir DTO a entidad usando el Mapper
+        Project project = ProjectMapper.toEntity(projectDto);
 
-            Project project = ProjectMapper.toEntity(projectDto);
+        // Guardar o actualizar en la base de datos
+        projectService.save(project);
 
-            projectService.save(project);
+        redirectAttributes.addFlashAttribute(
+                "message",
+                editing
+                        ? "Proyecto actualizado correctamente."
+                        : "Proyecto creado correctamente."
+        );
 
-            return "redirect:/projects";
-        } catch (IOException e) {
-            return "error-page";
-        }
-
-
+        return "redirect:/projects";
     }
 
+    // ELIMINAR PROYECTO
+    @PostMapping("/delete/{id}")
+    public String deleteProject(
+            @PathVariable Long id,
+            RedirectAttributes redirectAttributes
+    ) {
 
+        projectService.deleteById(id);
+
+        redirectAttributes.addFlashAttribute(
+                "message",
+                "Proyecto eliminado correctamente."
+        );
+
+        return "redirect:/projects";
+    }
 }

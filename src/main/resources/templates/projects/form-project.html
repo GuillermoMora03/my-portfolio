@@ -24,7 +24,8 @@
                 </div>
             </div>
 
-            <form class="admin-form" th:action="@{/projects/save}" th:object="${projectDto}" method="post" enctype="multipart/form-data">
+            <form class="admin-form" th:action="@{/projects/save}" th:object="${projectDto}" method="post">
+                <input type="hidden" th:field="*{id}">
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="title">Título</label>
@@ -41,10 +42,31 @@
                         <input id="projectUrl" th:field="*{projectUrl}" type="url" placeholder="URL del Proyecto">
                         <div th:if="${#fields.hasErrors('projectUrl')}" th:errors="*{projectUrl}" class="error-message"></div>
                     </div>
+
                     <div class="form-field form-field--full">
-                        <label for="file">Imagen del proyecto</label>
-                        <input type="file" id="file" name="file" accept="image/*" />
-                        <div th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="error-message"></div>
+                        <label for="imageUrl">URL de la imagen</label>
+
+                        <input
+                                id="imageUrl"
+                                th:field="*{imageUrl}"
+                                type="url"
+                                placeholder="https://res.cloudinary.com/..."
+                        >
+
+                        <div th:if="${#fields.hasErrors('imageUrl')}"
+                             th:errors="*{imageUrl}"
+                             class="error-message">
+                        </div>
+
+                        <!-- Vista previa de la imagen -->
+                        <div th:if="*{imageUrl != null and !imageUrl.isEmpty()}">
+                            <p>Imagen actual:</p>
+
+                            <img th:src="*{imageUrl}"
+                                 alt="Vista previa del proyecto"
+                                 width="200"
+                                 loading="lazy">
+                        </div>
                     </div>
                     <div class="form-field">
                         <label for="personalInfoId">ID de información personal</label>
