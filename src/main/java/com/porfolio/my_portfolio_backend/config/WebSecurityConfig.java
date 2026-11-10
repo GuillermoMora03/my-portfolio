@@ -32,7 +32,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/experience/new", "/experience/save", "/experience/edit/**", "/experience/delete/**").authenticated()
                         .requestMatchers("/personal-info/create", "/personal-info/save", "/personal-info/edit/**").authenticated()
                         .requestMatchers("/skills/new", "/skills/save", "/skills/edit/**", "/skills/delete/**").authenticated()
-                        .requestMatchers("/projects/new-project", "/projects/save").authenticated()
+                        .requestMatchers("/projects/new-project", "/projects/save", "/projects/edit/**", "/projects/delete/**").authenticated()
                         .requestMatchers("/education/personal/**", "/experience/personal/**", "/skills/personal/**").authenticated()
 
                         .anyRequest().permitAll()
